@@ -114,10 +114,56 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
 /* responsive */
 @media(max-width:980px){ .title{ font-size:34px } .grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); } .img-wrap img{ max-height:90px; } .modal{ width:92% } }
 @media(max-width:640px){ .title{ font-size:26px } .grid{ grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); } .img-wrap img{ max-height:76px; } }
+/* Background video */
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: blur(10px) brightness(0.35);
+    z-index: -3;
+}
+
+/* Dark overlay on top of video */
+#bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.60);
+    z-index: -2;
+}
+
+/* Faded Quaker City background logo */
+#bg-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 55vw;
+    max-width: 780px;
+    opacity: 0.075;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none; /* prevent interaction */
+}
 
 </style>
 </head>
 <body>
+  <!-- ========== BACKGROUND VIDEO LAYER ========== -->
+<video id="bg-video" autoplay muted loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+</video>
+
+<!-- Dark overlay for Killadelphia-style tone -->
+<div id="bg-overlay"></div>
+
+<!-- Faded Quaker City logo -->
+<img id="bg-logo" src="Quaker.png" alt="Background Logo">
+
   <!-- video background (muted, looped) -->
   <video class="video-bg" id="bgVideo" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
