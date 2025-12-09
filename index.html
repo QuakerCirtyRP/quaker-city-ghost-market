@@ -3,265 +3,302 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Quaker City's Contraband System</title>
+<title>Quaker City — Contraband System</title>
 
-<!-- Fonts + Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<!-- ===== CSS (All in one file) ===== -->
 <style>
-  /* -------- variables -------- */
-  :root{
-    --bg:#0a1428;              /* your dark navy */
-    --panel:#0f1a2a;
-    --accent:#dc143c;          /* Quaker red */
-    --accent-2:#0047ab;        /* Quaker blue */
-    --muted:#b0b8c0;
-    --text:#ffffff;
-    --glass: rgba(255,255,255,.03);
-    --card-radius:14px;
-    --shadow: 0 20px 60px rgba(0,0,0,.6);
-    --glass-border: rgba(255,255,255,.04);
-    --maxw:1200px;
-  }
+/* ---------- Theme variables ---------- */
+:root{
+  --bg:#0a1428;
+  --panel:#0f1a2a;
+  --accent:#dc143c;
+  --accent-2:#0047ab;
+  --muted:#b0b8c0;
+  --text:#fff;
+  --glass: rgba(255,255,255,.03);
+  --glass-border: rgba(255,255,255,.04);
+  --card-radius:14px;
+  --maxw:1280px;
+  --glow: 0 10px 30px rgba(220,20,60,0.14);
+}
 
-  /* -------- base -------- */
-  *{box-sizing:border-box}
-  html,body{height:100%; margin:0; font-family:"Rajdhani", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif; color:var(--text);}
-  body{
-    background:
-      radial-gradient(1000px 500px at 10% -10%, rgba(220,20,60,.08), transparent 60%),
-      radial-gradient(1000px 500px at 110% 10%, rgba(0,71,171,.07), transparent 60%),
-      linear-gradient(180deg, var(--bg), #041125 120%);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding:28px; display:flex; justify-content:center; min-height:100vh;
-  }
+/* ---------- Base ---------- */
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; font-family:"Rajdhani", system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif; color:var(--text);}
+body{
+  background:
+    radial-gradient(900px 450px at 10% -10%, rgba(220,20,60,.06), transparent 60%),
+    radial-gradient(900px 450px at 110% 10%, rgba(0,71,171,.06), transparent 60%),
+    linear-gradient(180deg, var(--bg), #041125 120%);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:28px;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+}
 
-  .wrap{ width:100%; max-width:var(--maxw); margin:0 auto; position:relative; z-index:5; }
+/* background blurred emblem */
+.background-logo{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:900px; height:900px;
+  background:url('Quaker.png') no-repeat center/contain;
+  filter: blur(20px) saturate(.8);
+  opacity:.10;
+  pointer-events:none;
+  z-index:1;
+}
+@media(max-width:1024px){ .background-logo{ width:700px;height:700px; blur:16px; opacity:.08 } }
+@media(max-width:640px){ .background-logo{ width:480px;height:480px; filter:blur(12px); opacity:.06 } }
 
-  /* ===== Blurred Background Logo (centered large emblem) ===== */
-  .background-logo {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 900px;
-    height: 900px;
-    transform: translate(-50%, -50%);
-    background: url('Quaker.png') no-repeat center center/contain;
-    opacity: 0.10;
-    filter: blur(20px) saturate(.8);
-    pointer-events: none;
-    z-index:1;
-    transition: opacity .8s ease, transform .8s ease;
-  }
-  @media (max-width:1100px){
-    .background-logo { width:700px; height:700px; opacity:0.09; filter: blur(16px); }
-  }
-  @media (max-width:768px){
-    .background-logo { width:480px; height:480px; opacity:0.07; filter: blur(12px); }
-  }
+/* container */
+.wrap{ width:100%; max-width:var(--maxw); margin:0 auto; position:relative; z-index:6; }
+.container{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:18px; padding:22px; border:1px solid var(--glass-border); box-shadow: 0 22px 60px rgba(0,0,0,.6); backdrop-filter: blur(8px) saturate(1.05); }
 
-  /* header */
-  .header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; position:relative; z-index:6; }
-  .header-left{ max-width:66%; }
-  .title{ font-size:40px; margin:0; line-height:1; font-weight:900; color:var(--accent); text-shadow:0 8px 24px rgba(0,0,0,.6); }
-  .subtitle{ margin-top:8px; color:var(--muted); font-weight:700; }
+/* header */
+.header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.header-left{ max-width:70%; }
+.title{ font-size:44px; margin:0; line-height:1; font-weight:900; color:var(--accent); text-shadow: 0 8px 24px rgba(0,0,0,.6); }
+.subtitle{ margin-top:8px; color:var(--muted); font-weight:700; }
 
-  .topnav{ display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
-  .topnav .cat{ color:var(--muted); text-decoration:none; font-weight:800; border-radius:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.03); background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); cursor:pointer; }
-  .topnav .cat.active{ background: linear-gradient(180deg, rgba(220,20,60,.12), rgba(0,71,171,.06)); border-color: rgba(220,20,60,.36); color:var(--text); box-shadow: 0 12px 40px rgba(220,20,60,.08); }
+/* top nav main */
+.topnav{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; align-items:center; }
+.topnav .cat{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); color:var(--muted); padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.03); font-weight:800; cursor:pointer; display:inline-flex; gap:8px; align-items:center; }
+.topnav .cat.active{ color:var(--text); border-color: rgba(220,20,60,.28); box-shadow: 0 10px 40px rgba(220,20,60,0.08); background: linear-gradient(180deg, rgba(220,20,60,.06), rgba(0,71,171,.03)); }
 
-  .header-right{ display:flex; align-items:center; gap:12px; }
-  .logo{ width:86px; height:86px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0)); }
-  .header-logo{ width:72px; height:72px; object-fit:contain; }
+/* sub-tabs (Killadelphia-style second row) */
+.subtabs{ margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.subtabs .sub{ padding:8px 12px; border-radius:999px; background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.03); color:var(--muted); font-weight:800; cursor:pointer; transition: all .18s ease; }
+.subtabs .sub:hover{ transform:translateY(-2px); }
+.subtabs .sub.active{ color:var(--text); background: linear-gradient(180deg, rgba(220,20,60,.12), rgba(0,71,171,.06)); box-shadow: 0 10px 40px rgba(220,20,60,0.08); border-color: rgba(220,20,60,.28); }
 
-  /* container */
-  .container{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:18px; padding:20px; border:1px solid var(--glass-border); box-shadow:var(--shadow); backdrop-filter: blur(8px) saturate(1.05); position:relative; z-index:6; }
+/* header-right */
+.header-right{ display:flex; align-items:center; gap:12px; }
+.logo{ width:86px; height:86px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); }
+.header-logo{ width:72px; height:72px; object-fit:contain; }
 
-  /* controls */
-  .controls-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
-  .controls-left{ display:flex; align-items:center; gap:12px; }
-  label.choose{ color:var(--muted); font-weight:700; }
-  select, input[type="text"]{ padding:10px 12px; border-radius:10px; background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); color:var(--text); font-weight:800; }
+/* controls (drop button area) */
+.controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; }
+.controls .left{ display:flex; gap:10px; align-items:center; }
+.choose{ color:var(--muted); font-weight:800; margin-right:6px; }
+select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); color:var(--text); padding:8px 10px; border-radius:10px; font-weight:800; }
 
-  /* buttons */
-  .btn{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); padding:10px 14px; border-radius:10px; font-weight:900; cursor:pointer; }
-  .btn.spin{ background: linear-gradient(180deg, rgba(220,20,60,.95), rgba(160,10,40,.85)); color:white; border:1px solid rgba(255,255,255,.14); box-shadow: 0 18px 40px rgba(220,20,60,.12); padding:12px 18px; font-size:16px; }
+/* drop button group */
+.drop-actions{ display:flex; gap:10px; align-items:center; }
+.btn{ padding:10px 14px; border-radius:10px; font-weight:900; cursor:pointer; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); color:var(--text); }
+.btn.drop{ background: linear-gradient(180deg, rgba(220,20,60,.95), rgba(160,10,40,.85)); box-shadow: var(--glow); color:white; }
 
-  /* reel */
-  .reel-wrap{ margin-top:6px; border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,.03); background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); overflow:hidden; position:relative; }
-  .strip{ display:flex; gap:12px; align-items:center; padding:10px; transition: transform .12s linear; will-change: transform; }
-  .slot{ min-width:120px; height:110px; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.06); background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(255,255,255,0)); box-shadow: 0 6px 20px rgba(0,0,0,.5) inset; position:relative; cursor:pointer; }
-  .slot img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .slot .label{ position:absolute; left:10px; bottom:8px; font-weight:800; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:92%; }
+/* reel / grid area */
+.grid-wrap{ margin-top:16px; border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,.03); background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); box-shadow: inset 0 6px 20px rgba(0,0,0,.3); }
+.grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:14px; align-items:stretch; }
 
-  .center-line{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:6px; height:86px; border-radius:6px; pointer-events:none; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow: 0 0 18px rgba(255,212,0,.06); z-index:6; }
+/* card */
+.card{ border-radius:12px; padding:8px; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.04); min-height:150px; display:flex; flex-direction:column; justify-content:flex-start; position:relative; overflow:visible; }
+.card .name{ font-weight:900; margin-bottom:8px; color:var(--muted); font-size:14px; }
+.card .img-wrap{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:8px; }
+.card .img-wrap img{ max-width:100%; max-height:100%; object-fit:contain; display:block; }
 
-  /* acquired grid & cards */
-  .acquired-heading{ margin:14px 0 10px; color: var(--accent); font-weight:900; font-size:18px; }
-  .acquired-grid{ display:flex; gap:10px; flex-wrap:wrap; padding:6px 0; }
-  .drop-card{ display:flex; gap:10px; align-items:center; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.04); background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); min-width:220px; cursor:pointer; }
-  .drop-card img{ width:56px; height:56px; object-fit:cover; border-radius:8px; }
-  .drop-details .name{ font-weight:900; }
-  .drop-details .rarity{ color:var(--muted); font-size:12px; margin-top:4px; font-weight:700; }
+/* rarity badge */
+.badge{ position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,.36); padding:6px 8px; border-radius:8px; font-weight:900; color:var(--muted); border:1px solid rgba(255,255,255,.03); font-size:12px; }
 
-  /* info panels */
-  .info-panel{ border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,.04); background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); min-height:120px; }
+/* center drop overlay (modal spinner) */
+.modal-overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; }
+.modal-overlay.open{ display:flex; }
+.modal{ width:920px; max-width:96%; border-radius:12px; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); box-shadow: 0 22px 60px rgba(0,0,0,.6); }
+.modal .strip{ display:flex; gap:12px; overflow:hidden; align-items:center; padding:10px; }
 
-  /* admin */
-  .admin-flag{ font-weight:900; color:var(--muted); cursor:pointer; padding:6px 8px; border-radius:8px; border:1px solid rgba(255,255,255,.03); }
-  .admin-panel{ position:fixed; right:18px; top:18px; width:360px; max-width:94%; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,.05); box-shadow: 0 18px 60px rgba(0,0,0,.6); z-index:999; display:none; }
-  .admin-panel.open{ display:block; }
+/* winner indicator */
+.modal .center-indicator{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:6px; height:120px; border-radius:6px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow: 0 0 24px rgba(255,200,0,.08); pointer-events:none; }
 
-  /* modal */
-  .stats-overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:900; }
-  .stats-overlay.open{ display:flex; }
-  .stats-panel{ width:540px; max-width:94%; border-radius:12px; padding:18px; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.06); }
-  .stats-image{ width:100%; height:220px; object-fit:cover; border-radius:10px; margin-top:12px; }
+/* acquired area */
+.acquired-heading{ margin-top:18px; font-weight:900; color:var(--accent); }
+.acquired-grid{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
 
-  /* footer */
-  .footer{ margin-top:20px; display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:12px; }
+/* small info panels */
+.info-row{ display:flex; gap:12px; margin-top:14px; align-items:flex-start; flex-wrap:wrap; }
+.info-panel{ flex:1; min-width:240px; border-radius:12px; padding:12px; background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.04); }
 
-  /* responsive */
-  @media(max-width:980px){
-    .header{ flex-direction:column; gap:12px; align-items:flex-start; }
-    .header-right{ align-self:flex-end; }
-  }
-  @media(max-width:640px){
-    .slot{ min-width:92px; height:82px; }
-    .center-line{ height:72px; }
-    .title{ font-size:28px; }
-    .background-logo{ opacity:0.06; transform:translate(-50%,-50%) scale(.9); filter: blur(10px); }
-  }
+/* admin */
+.admin-flag{ padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.03); color:var(--muted); cursor:pointer; }
+.admin-panel{ position:fixed; right:18px; top:18px; width:360px; max-width:94%; background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,.05); box-shadow: 0 18px 60px rgba(0,0,0,.6); display:none; z-index:10000; }
+.admin-panel.open{ display:block; }
 
-  /* small helpers */
-  .sr-only{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+/* footer */
+.footer{ margin-top:20px; display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:12px; }
+
+/* responsive */
+@media(max-width:1100px){
+  .title{ font-size:34px; }
+}
+@media(max-width:720px){
+  .title{ font-size:26px; }
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
+  .modal{ width:92%; padding:12px; }
+  .modal .center-indicator{ height:90px; }
+}
 </style>
 </head>
 <body>
-<!-- Background emblem (large blurred Quaker.png) -->
-<div class="background-logo" aria-hidden="true"></div>
-<div class="wrap">
+  <!-- blurred emblem -->
+  <div class="background-logo" aria-hidden="true"></div>
 
-  <!-- ===== HEADER ===== -->
-  <div class="header">
-    <div class="header-left">
-      <h1 class="title">Quaker City</h1>
-      <div class="subtitle">Contraband Spin System</div>
+  <div class="wrap">
+    <!-- header -->
+    <div class="header">
+      <div class="header-left">
+        <h1 class="title">Quaker City</h1>
+        <div class="subtitle">Contraband System</div>
 
-      <!-- Category Navigation -->
-      <div class="topnav">
-        <div class="cat active" data-cat="tier1">Tier 1 Weaponry</div>
-        <div class="cat" data-cat="tier2">Tier 2 Weaponry</div>
-        <div class="cat" data-cat="attachments">Attachments</div>
-        <div class="cat" data-cat="drugs">Drugs</div>
-        <div class="cat" data-cat="stats">Drops</div>
-        <div class="cat" data-cat="turf">Turf</div>
-        <div class="cat" data-cat="prices">Prices</div>
+        <!-- main nav -->
+        <div class="topnav" id="mainNav">
+          <div class="cat active" data-tab="tier1"><i class="fa-solid fa-gun"></i>&nbsp;Tier 1 Weaponry</div>
+          <div class="cat" data-tab="tier2"><i class="fa-solid fa-shield"></i>&nbsp;Tier 2 Weaponry</div>
+          <div class="cat" data-tab="attachments"><i class="fa-solid fa-wrench"></i>&nbsp;Attachments</div>
+          <div class="cat" data-tab="drugs"><i class="fa-solid fa-capsules"></i>&nbsp;Drugs</div>
+          <div class="cat" data-tab="drops"><i class="fa-solid fa-box"></i>&nbsp;Weapon Drops</div>
+          <div class="cat" data-tab="turf"><i class="fa-solid fa-map"></i>&nbsp;Turf Map</div>
+        </div>
+
+        <!-- subtabs (changes depending on main tab) -->
+        <div class="subtabs" id="subtabs">
+          <!-- filled dynamically -->
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="admin-flag" id="adminToggle" title="Admin"><i class="fa-solid fa-user-lock"></i></div>
+        <div class="logo"><img src="Quaker.png" class="header-logo" alt="Quaker logo"></div>
       </div>
     </div>
 
-    <!-- Right side header -->
-    <div class="header-right">
-      <!-- Discord icon -->
-      <a href="#" class="admin-flag" title="Admin Login">
-        <i class="fa-solid fa-user-shield"></i>
-      </a>
+    <!-- main container -->
+    <div class="container" id="appContainer">
 
-      <!-- Logo -->
-      <div class="logo">
-        <img src="Quaker.png" class="header-logo">
+      <!-- controls -->
+      <div class="controls">
+        <div class="left">
+          <div class="choose">Filter</div>
+          <select id="filterSelect">
+            <option value="all">All</option>
+            <option value="common">Common</option>
+            <option value="uncommon">Uncommon</option>
+            <option value="rare">Rare</option>
+            <option value="epic">Epic</option>
+            <option value="legendary">Legendary</option>
+          </select>
+        </div>
+
+        <div class="drop-actions">
+          <button class="btn" id="viewDropListBtn"><i class="fa-solid fa-list"></i> Drops</button>
+          <button class="btn drop" id="dropBtn"><i class="fa-solid fa-dice"></i> DROP</button>
+        </div>
+      </div>
+
+      <!-- grid -->
+      <div class="grid-wrap">
+        <div class="grid" id="itemGrid" aria-live="polite">
+          <!-- cards injected here -->
+        </div>
+      </div>
+
+      <!-- acquired items -->
+      <div class="acquired-heading">Acquired Items</div>
+      <div class="acquired-grid" id="acquiredGrid"></div>
+
+      <div class="info-row">
+        <div class="info-panel" id="infoPanel">Click a card for details. Use DROP to open the spinner and receive a weighted drop.</div>
+        <div class="info-panel">
+          <div style="font-weight:900;">Made By Route</div>
+          <div style="color:var(--muted); margin-top:6px;" id="lastUpdated">Last updated: —</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© Quaker City Roleplay</div>
+      <div style="color:var(--muted)">Built with ❤️</div>
+    </div>
+  </div>
+
+  <!-- modal spinner (opens when clicking DROP) -->
+  <div class="modal-overlay" id="spinModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Spin modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <div style="font-weight:900; font-size:18px;">Spin Wheel</div>
+        <div style="color:var(--muted); font-weight:800;">Click SPIN to start</div>
+      </div>
+
+      <div style="position:relative; margin-top:12px;">
+        <div class="strip" id="spinStrip" style="height:140px; display:flex; gap:12px; align-items:center; overflow:hidden;"></div>
+        <div class="center-indicator" aria-hidden="true"></div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+        <button class="btn" id="closeSpin">Close</button>
+        <button class="btn drop" id="spinStartBtn">SPIN</button>
       </div>
     </div>
   </div>
 
-  <!-- ===== MAIN CONTAINER ===== -->
-  <div class="container">
-
-    <!-- Controls Row -->
-    <div class="controls-row">
-      <div class="controls-left">
-        <label class="choose">Choose Your Tier:</label>
-        <select id="tier">
-          <option value="tier1">Tier 1</option>
-          <option value="tier2">Tier 2</option>
-          <option value="attachments">Attachments</option>
-          <option value="drugs">Drugs</option>
-        </select>
+  <!-- stats modal for clicking a card -->
+  <div class="modal-overlay" id="statsModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-weight:900;" id="statsTitle">Item</div>
+        <button class="btn" id="closeStats"><i class="fa-solid fa-xmark"></i></button>
       </div>
-
-      <button class="btn spin" id="spinBtn">
-        <i class="fa-solid fa-bolt"></i> Spin
-      </button>
+      <div style="display:flex; gap:12px; margin-top:12px;">
+        <div style="flex:0 0 220px; height:140px; border-radius:10px; overflow:hidden; background:rgba(0,0,0,.06); display:flex; align-items:center; justify-content:center;">
+          <img id="statsImg" src="" alt="" style="max-width:100%; max-height:100%; object-fit:contain;">
+        </div>
+        <div style="flex:1;">
+          <div id="statsRarity" style="color:var(--muted); font-weight:900;"></div>
+          <div id="statsDetails" style="margin-top:12px; color:var(--muted);"></div>
+        </div>
+      </div>
     </div>
-
-    <!-- Reel / Spinner -->
-    <div class="reel-wrap">
-      <div class="strip" id="slotStrip"></div>
-      <div class="center-line"></div>
-    </div>
-
-    <!-- Acquired Items -->
-    <div class="acquired-heading">Acquired Items</div>
-    <div class="acquired-grid" id="acquiredGrid"></div>
-
-    <!-- Information Panels -->
-    <div class="info-panel" id="infoPanel">
-      <h3 style="margin:0 0 8px;">Information</h3>
-      <p style="color:var(--muted)">
-        Select a tier and press <b>Spin</b> to receive a random item.
-      </p>
-    </div>
-
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    <div>Made By Route</div>
-    <div>Quaker City © 2025</div>
+  <!-- Admin panel -->
+  <div class="admin-panel" id="adminPanel" aria-hidden="true">
+    <h3 style="margin:6px 0 12px;">Admin Panel</h3>
+    <label>Discord Webhook</label>
+    <input id="adminWebhook" type="text" placeholder="https://discord.com/api/webhooks/..." style="width:100%; margin-bottom:8px;">
+    <label>Server Uptime URL</label>
+    <input id="adminUptime" type="text" placeholder="http://example.com/health" style="width:100%; margin-bottom:8px;">
+    <label>Price JSON URL</label>
+    <input id="adminPrices" type="text" placeholder="https://raw.githubusercontent.com/.../prices.json" style="width:100%; margin-bottom:8px;">
+    <hr style="border-color:rgba(255,255,255,.03); margin:8px 0;">
+    <div style="display:flex; gap:8px;">
+      <button class="btn" id="saveAdminBtn">Save</button>
+      <button class="btn" id="logoutAdminBtn">Logout</button>
+    </div>
+    <div style="color:var(--muted); margin-top:10px; font-size:13px;">Admin password (client-side): <b>Qacti</b></div>
   </div>
 
-</div>
+  <!-- audio (mp3 must be uploaded) -->
+  <audio id="bgm" src="OceanEyes.mp3" loop preload="auto"></audio>
 
-<!-- ===== ADMIN PANEL ===== -->
-<div class="admin-panel" id="adminPanel">
-  <h2 style="margin-top:0;">Admin Panel</h2>
-  <p style="color:var(--muted); font-size:14px;">Use this panel to configure advanced settings.</p>
-
-  <label>Discord Webhook URL</label>
-  <input type="text" id="webhookInput" placeholder="Enter webhook URL">
-
-  <label>Server Uptime URL</label>
-  <input type="text" id="uptimeInput" placeholder="Enter server URL">
-
-  <label>Price JSON URL</label>
-  <input type="text" id="priceInput" placeholder="Enter JSON URL">
-
-  <button class="btn" id="saveAdmin">Save Settings</button>
-</div>
-
-<!-- ===== DROPS MODAL ===== -->
-<div class="stats-overlay" id="statsOverlay">
-  <div class="stats-panel">
-    <h2 id="statsName"></h2>
-    <div id="statsRarity" style="color:var(--muted); font-weight:700; font-size:14px;"></div>
-    <img id="statsImage" class="stats-image" src="">
-    <p id="statsDesc" style="color:var(--muted); margin-top:10px; font-size:14px;">
-      More information will appear here for each drop.
-    </p>
-    <button class="btn" id="closeStats">Close</button>
-  </div>
-</div>
 <script>
-/* ============================
-   Quaker City — Part 3 JS
-   ============================ */
+/* -------------------------------
+   Quaker City — Combined single-file app
+   Features:
+     - One-page tab + subtabs
+     - Grid view for items
+     - DROP button opens spinner modal
+     - Spinner selects weighted drop
+     - Images shown contained (no cropping)
+     - Admin panel (client-side)
+     - Music + SFX
+----------------------------------*/
 
-/* -------------------------
-   Data (images, items, stats)
-   ------------------------- */
+/* ---------- Data (items) ---------- */
+/* You can replace these with your image filenames or a more complete dataset */
 const IMAGES = {
   '.38 Special': 'https://media.discordapp.net/attachments/1442278653823156367/1447814118647140403/25CE001F-484F-4FDF-BF4A-FC4774C95BCD.png?ex=6938fd78&is=6937abf8&hm=650ac7176eb502bd0a8f89a30f687df7740376b27875c134da94415c8ca8583e&=&format=webp&quality=lossless&width=1409&height=1409',
   'Ghost Glock 17': 'https://media.discordapp.net/attachments/1442278653823156367/1447814120631042150/832A4CE9-FD8F-4AC0-AD33-A17573FB6678.png?ex=6938fd79&is=6937abf9&hm=16aec57bccd0f7cd1175588d39da6c823d174cb0efc253dcd8a63dfd87a832ac&=&format=webp&quality=lossless&width=1409&height=1409',
@@ -283,80 +320,35 @@ const IMAGES = {
   'KEL-TEC PLR': 'https://media.discordapp.net/attachments/1442278653823156367/1447814331868774410/37DC7D8A-3EA6-4F01-9436-D5E736E13C4A.png?ex=6938fdab&is=6937ac2b&hm=c233af0b74069b5196ee10448b44ec96c8a10322285015ab58daf74bc9603bcd&=&format=webp&quality=lossless&width=938&height=1409',
   'Draco': 'https://media.discordapp.net/attachments/1442278653823156367/1447814332862824469/E7E6F61C-2D83-425C-B230-AF4EEF446C3A.png?ex=6938fdac&is=6937ac2c&hm=0fa109d9c32d00a2e01443055de8dd0e16d035963b9fbe87f6f434b3a09b951c&=&format=webp&quality=lossless&width=938&height=1409'
 };
-const FALLBACK_IMG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="240"%3E%3Crect fill="%23333" width="400" height="240"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+const FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="240"%3E%3Crect fill="%23333" width="400" height="240"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
 
-const ALL_ITEMS = [
-  ['.38 Special','common','tier1'],
-  ['Ghost Glock 17','common','tier1'],
-  ['Glock 20 Switch','epic','tier1'],
-  ['FNX -45','epic','tier1'],
-  ['Beretta M9','uncommon','tier1'],
-  ['G23','uncommon','tier1'],
-  ['Tec-9','epic','tier1'],
-  ['MAC-10','uncommon','tier1'],
-  ['Micro UZI','rare','tier1'],
-  ['G41','rare','tier1'],
-  ['MP9','common','tier1'],
-  ['G19 MOS','rare','tier1'],
-  ['G19 MOS','rare','tier1'],
-  ['HELLPUP DRACO','legendary','tier2'],
-  ['AK-47','legendary','tier2'],
-  ['Black ARP','epic','tier2'],
-  ['KEL-TEC PLR','epic','tier2'],
-  ['Draco','epic','tier2']
-];
-
-const DRUGS = [
-  ['RP 10','common','rp_10'],
-  ['MBox 10','common','mbox_10'],
-  ['V 230','common','v_230'],
-  ['K56','common','k_56'],
-  ['Line of Green','uncommon','line_green'],
-  ['K8','uncommon','k8_greens'],
-  ['V 48','uncommon','v_48'],
-  ['Green Pint','uncommon','pint_green'],
-  ['RP 20','rare','rp_20'],
-  ['Line of Wockhardt','rare','line_wock'],
-  ['Line of Pai','rare','line_pai'],
-  ['MBox 30','epic','mbox_30'],
-  ['RP 30','epic','rp_30'],
-  ['Superman Pill','epic','superman'],
-  ['Quagen Pint','epic','quagen_pint'],
-  ['Wockhardt Pint','epic','wock_pint']
-];
-
-const ATTACHMENTS = [
-  ['Flashlight','uncommon','attach_light'],
-  ['Extended Magazine','rare','mag_ext'],
-  ['Drum Magazine','epic','drum_mag'],
-  ['Auto Sear','legendary','autosear'],
-  ['Switch','legendary','switch']
-];
-
-const WEAPON_STATS = {
-  '.38 Special': { damage:28, fire:750, ammo:'9mm', magStd:15, magExt:33 },
-  'Glock 19': { damage:28, fire:750, ammo:'9mm', magStd:15, magExt:33 },
-  'Glock 20': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'Beretta M9': { damage:28, fire:750, ammo:'9mm', magStd:15, magExt:30 },
-  'G23': { damage:30, fire:750, ammo:'9mm', magStd:16, magExt:32 },
-  'FNX -45': { damage:32, fire:400, ammo:'.45 ACP', magStd:8, magExt:16 },
-  'Tec-9': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'MAC-10': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50  },
-  'Micro UZI': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'G41': { damage:23, fire:1100, ammo:'.32 ACP', magStd:20, magExt:40 },
-  'MP9': { damage:28, fire:750, ammo:'9mm', magStd:15, magExt:33 },
-  'G19 MOS': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'P90': { damage:40, fire:750, ammo:'5.56x45', magStd:30, magExt:60 },
-  'HELLPUP DRACO': { damage:40, fire:750, ammo:'5.56x45', magStd:30, magExt:60 },
-  'AK-47': { damage:40, fire:750, ammo:'5.56x45', magStd:30, magExt:60 },
-  'Black ARP': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'KEL-TEC PLR': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 },
-  'Draco': { damage:30, fire:600, ammo:'.45 ACP', magStd:25, magExt:50 }
+/* master item lists grouped by tier */
+const ITEMS = {
+  tier1: [
+    {name:'Ghost Glock 17', rarity:'common', img:IMAGES['Ghost Glock 17']},
+    {name:'Glock 19', rarity:'common', img:IMAGES['Glock 19']},
+    {name:'Glock 20', rarity:'common', img:IMAGES['Glock 20']},
+    {name:'Beretta M9', rarity:'uncommon', img:IMAGES['Beretta M9']},
+    {name:'MAC-10', rarity:'rare', img:IMAGES['MAC-10']},
+    {name:'MP9', rarity:'common', img:IMAGES['MP9']},
+    {name:'G23', rarity:'uncommon', img:IMAGES['G23']},
+    {name:'FNX-45', rarity:'epic', img:IMAGES['FNX-45']}
+  ],
+  tier2: [
+    {name:'AK-47', rarity:'epic', img:IMAGES['AK-47']},
+    {name:'M4A1', rarity:'epic', img:IMAGES['M4A1']}
+  ],
+  attachments: [
+    {name:'Extended Mag', rarity:'rare', img:FALLBACK},
+    {name:'Flashlight', rarity:'uncommon', img:FALLBACK}
+  ],
+  drugs: [
+    {name:'RP 10', rarity:'common', img:FALLBACK},
+    {name:'RP 20', rarity:'rare', img:FALLBACK}
+  ]
 };
 
-/* -------------------------
-   Default weights (user config)
-   ------------------------- */
+/* default weights from your config earlier */
 const DEFAULT_WEIGHTS = {
   tier1: { common:35, uncommon:40, rare:25, epic:10 },
   tier2: { rare:50, epic:40, legendary:10 },
@@ -364,473 +356,345 @@ const DEFAULT_WEIGHTS = {
   drugs: { common:35, uncommon:25, rare:25, epic:15 }
 };
 
-/* -------------------------
-   DOM refs (match Part 2)
-   ------------------------- */
-const slotStrip = document.getElementById('slotStrip');
-const tierSelect = document.getElementById('tier');
-const spinBtn = document.getElementById('spinBtn');
+/* ---------- State & refs ---------- */
+let activeTab = 'tier1';
+let selectedSub = null;
+const itemGrid = document.getElementById('itemGrid');
 const acquiredGrid = document.getElementById('acquiredGrid');
-
-const adminFlag = document.querySelector('.admin-flag');
-const adminPanel = document.getElementById('adminPanel');
-const webhookInput = document.getElementById('webhookInput');
-const uptimeInput = document.getElementById('uptimeInput');
-const priceInput = document.getElementById('priceInput');
-const saveAdminBtn = document.getElementById('saveAdmin');
-
-const statsOverlay = document.getElementById('statsOverlay');
-const statsName = document.getElementById('statsName');
+const subtabsEl = document.getElementById('subtabs');
+const dropBtn = document.getElementById('dropBtn');
+const spinModal = document.getElementById('spinModal');
+const spinStrip = document.getElementById('spinStrip');
+const spinStartBtn = document.getElementById('spinStartBtn');
+const closeSpin = document.getElementById('closeSpin');
+const statsModal = document.getElementById('statsModal');
+const closeStats = document.getElementById('closeStats');
+const statsTitle = document.getElementById('statsTitle');
 const statsRarity = document.getElementById('statsRarity');
-const statsImage = document.getElementById('statsImage');
-const statsDesc = document.getElementById('statsDesc');
-const closeStatsBtn = document.getElementById('closeStats');
+const statsImg = document.getElementById('statsImg');
+const statsDetails = document.getElementById('statsDetails');
+const filterSelect = document.getElementById('filterSelect');
+const mainNavCats = document.querySelectorAll('.topnav .cat');
 
-let drops = []; // recent acquired items
-let spinning = false;
+/* admin */
+const adminToggle = document.getElementById('adminToggle');
+const adminPanel = document.getElementById('adminPanel');
+const saveAdminBtn = document.getElementById('saveAdminBtn');
+const logoutAdminBtn = document.getElementById('logoutAdminBtn');
+const adminWebhook = document.getElementById('adminWebhook');
+const adminUptime = document.getElementById('adminUptime');
+const adminPrices = document.getElementById('adminPrices');
 
-/* -------------------------
-   Local storage helpers
-   ------------------------- */
+const bgm = document.getElementById('bgm');
+
+/* audio context for SFX */
+const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext||window.webkitAudioContext)() : null;
+
+/* ---------- Utilities ---------- */
+function tick(ms){ return new Promise(res => setTimeout(res, ms)); }
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+/* ---------- Storage helpers ---------- */
 function loadConfig(){
-  const cfg = JSON.parse(localStorage.getItem('qc_config') || '{}');
-  return {
-    webhook: cfg.webhook || '',
-    uptimeUrl: cfg.uptimeUrl || '',
-    priceUrl: cfg.priceUrl || '',
-    weights: cfg.weights || JSON.parse(JSON.stringify(DEFAULT_WEIGHTS))
-  };
+  try{ return JSON.parse(localStorage.getItem('qc_cfg')) || {}; }catch(e){return {}}
 }
 function saveConfig(cfg){
-  localStorage.setItem('qc_config', JSON.stringify(cfg));
+  localStorage.setItem('qc_cfg', JSON.stringify(cfg));
 }
+function getWeights(){ const cfg = loadConfig(); return cfg.weights || DEFAULT_WEIGHTS; }
+function setWeights(w){ const cfg = loadConfig(); cfg.weights = w; saveConfig(cfg); }
 
-/* -------------------------
-   Admin auth (simple client-side)
-   ------------------------- */
-const ADMIN_PASS = 'Qacti'; // from user
-function isAdmin(){
-  return sessionStorage.getItem('qc_admin') === '1';
-}
-function setAdmin(flag){
-  if(flag) sessionStorage.setItem('qc_admin','1'); else sessionStorage.removeItem('qc_admin');
-  adminPanel.style.display = flag ? 'block' : 'none';
-}
+/* ---------- Admin logic (simple password from user) ---------- */
+const ADMIN_PASS = 'Qacti';
+function isAdmin(){ return sessionStorage.getItem('qc_admin') === '1'; }
+function setAdmin(flag){ if(flag) sessionStorage.setItem('qc_admin','1'); else sessionStorage.removeItem('qc_admin'); adminPanel.style.display = flag ? 'block' : 'none'; }
+adminToggle.addEventListener('click', ()=>{
+  if(isAdmin()){ adminPanel.classList.toggle('open'); adminPanel.style.display = adminPanel.style.display === 'block' ? 'none':'block'; return; }
+  const p = prompt('Enter admin password:'); if(p === ADMIN_PASS){ setAdmin(true); alert('Admin granted'); loadAdmin(); } else alert('Wrong password'); 
+});
+logoutAdminBtn.addEventListener('click', ()=> { setAdmin(false); adminPanel.style.display = 'none'; alert('Logged out'); });
 
-/* admin flag click => prompt */
-adminFlag.addEventListener('click', ()=>{
-  if(isAdmin()){
-    // already admin => toggle panel
-    adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
-    return;
-  }
-  const pw = prompt('Enter admin password:');
-  if(pw === ADMIN_PASS){
-    setAdmin(true);
-    loadAdminUI();
-    alert('Admin access granted.');
-  } else {
-    alert('Wrong password.');
-  }
+function loadAdmin(){
+  const cfg = loadConfig();
+  adminWebhook.value = cfg.webhook || '';
+  adminUptime.value = cfg.uptime || '';
+  adminPrices.value = cfg.prices || '';
+}
+saveAdminBtn.addEventListener('click', ()=>{
+  if(!isAdmin()){ alert('Admin only'); return; }
+  const cfg = loadConfig();
+  cfg.webhook = adminWebhook.value.trim();
+  cfg.uptime = adminUptime.value.trim();
+  cfg.prices = adminPrices.value.trim();
+  saveConfig(cfg);
+  alert('Saved');
+  loadAdmin();
 });
 
-/* logout when save/close? we'll keep simple */
-
-/* -------------------------
-   Music + SFX setup
-   ------------------------- */
-const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
-let bgmAudio = null;
-function setupBGM(){
-  // create audio element pointing to OceanEyes.mp3 (user must upload file)
-  bgmAudio = document.createElement('audio');
-  bgmAudio.id = 'bgm';
-  bgmAudio.src = 'OceanEyes.mp3';
-  bgmAudio.loop = true;
-  bgmAudio.preload = 'auto';
-  bgmAudio.crossOrigin = 'anonymous';
-  document.body.appendChild(bgmAudio);
-
-  // resume audio context on first user gesture and play bgm
-  function startOnGesture(){
-    if(audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume().catch(()=>{});
-    }
-    bgmAudio.play().catch(()=>{/* playback may be blocked until gesture; it's fine */});
-    window.removeEventListener('click', startOnGesture);
-    window.removeEventListener('touchstart', startOnGesture);
-  }
-  window.addEventListener('click', startOnGesture);
-  window.addEventListener('touchstart', startOnGesture);
+/* ---------- Rendering functions ---------- */
+function clearActiveMain(){
+  mainNavCats.forEach(c=> c.classList.remove('active'));
+}
+function renderSubtabsFor(tab){
+  subtabsEl.innerHTML = '';
+  // Example subtabs per category (customize as needed)
+  const data = {
+    tier1: ['All','Pistols','SMG','Special'],
+    tier2: ['All','Rifles','Snipers'],
+    attachments: ['All','Mags','Bars','Optics'],
+    drugs: ['All','Common','Rare']
+  };
+  const arr = data[tab] || ['All'];
+  arr.forEach((s,i)=>{
+    const el = document.createElement('div');
+    el.className = 'sub' + (i===0 ? ' active' : '');
+    el.textContent = s;
+    el.dataset.sub = s.toLowerCase().replace(/\s+/g,'_');
+    el.addEventListener('click', ()=> {
+      document.querySelectorAll('.subtabs .sub').forEach(x=> x.classList.remove('active'));
+      el.classList.add('active');
+      selectedSub = el.dataset.sub;
+      renderGrid();
+    });
+    subtabsEl.appendChild(el);
+  });
+  selectedSub = arr[0].toLowerCase().replace(/\s+/g,'_');
 }
 
-/* tiny SFX generator using oscillator */
-function playTone(freq, len=0.08, type='sine', gain=0.06){
+/* return items for activeTab filtered by rarity/subtab */
+function itemsForActive(){
+  const all = ITEMS[activeTab] || [];
+  const filter = filterSelect.value;
+  let res = all.slice();
+  if(filter && filter !== 'all') res = res.filter(i=> i.rarity === filter);
+  // subtab filter (basic demo — user may customize)
+  if(selectedSub && selectedSub !== 'all' && selectedSub !== 'all'){
+    // for example sub names like 'pistols' - we do not have categories on items, skip advanced filtering
+    // keep as-is (future: add category fields to ITEMS)
+  }
+  return res;
+}
+
+function createCard(item){
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.innerHTML = `
+    <div class="name">${item.name}</div>
+    <div class="img-wrap"><img src="${item.img || FALLBACK}" alt="${item.name}"></div>
+    <div class="badge">${(item.rarity || 'COMMON').toUpperCase()}</div>
+  `;
+  c.addEventListener('click', ()=> openItemModal(item));
+  return c;
+}
+
+function renderGrid(){
+  itemGrid.innerHTML = '';
+  const arr = itemsForActive();
+  arr.forEach(it=> {
+    itemGrid.appendChild(createCard(it));
+  });
+}
+
+/* ---------- Modals ---------- */
+function openItemModal(item){
+  statsTitle.textContent = item.name;
+  statsRarity.textContent = (item.rarity || 'common').toUpperCase();
+  statsImg.src = item.img || FALLBACK;
+  statsDetails.innerHTML = `<div style="color:var(--muted)">Rarity: ${(item.rarity||'common').toUpperCase()}</div>`;
+  statsModal.classList.add('open');
+  statsModal.style.display = 'flex';
+}
+closeStats.addEventListener('click', ()=> { statsModal.classList.remove('open'); statsModal.style.display = 'none'; });
+document.getElementById('statsModal').addEventListener('click', (e)=> { if(e.target.id === 'statsModal'){ statsModal.classList.remove('open'); statsModal.style.display = 'none'; } });
+
+/* ---------- Spinner modal (DROP) ---------- */
+function openSpinModal(){
+  spinStrip.innerHTML = '';
+  spinModal.classList.add('open');
+  spinModal.style.display = 'flex';
+  renderSpinStrip(activeTab);
+}
+function closeSpinModal(){ spinModal.classList.remove('open'); spinModal.style.display = 'none'; }
+
+dropBtn.addEventListener('click', ()=> openSpinModal());
+document.getElementById('viewDropListBtn').addEventListener('click', ()=> {
+  if(acquiredGrid.children.length === 0) alert('No drops yet'); else window.scrollTo({ top: document.querySelector('.acquired-heading').offsetTop - 60, behavior:'smooth' });
+});
+
+closeSpin.addEventListener('click', ()=> closeSpinModal());
+
+/* build visual spinner strip (pool for chosen tier) */
+function renderSpinStrip(tier){
+  spinStrip.innerHTML = '';
+  const pool = ITEMS[tier] ? ITEMS[tier].slice() : [];
+  // duplicate pool so there are many tiles
+  for(let i=0;i<40;i++){
+    const item = rand(pool) || { name:'Unknown', rarity:'common', img:FALLBACK };
+    const el = document.createElement('div');
+    el.style.minWidth = '140px';
+    el.style.height = '120px';
+    el.style.borderRadius = '12px';
+    el.style.overflow = 'hidden';
+    el.style.background = 'linear-gradient(180deg, rgba(0,0,0,.16), rgba(255,255,255,0))';
+    el.style.border = '1px solid rgba(255,255,255,.04)';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.flexDirection = 'column';
+    el.style.padding = '8px';
+    el.innerHTML = `<div style="font-weight:900; color:var(--muted); font-size:13px; margin-bottom:6px;">${item.name}</div><img src="${item.img || FALLBACK}" style="max-width:100%; max-height:64px; object-fit:contain;">`;
+    spinStrip.appendChild(el);
+  }
+}
+
+/* pick rarity using weights */
+function pickRarity(weights){
+  const entries = Object.entries(weights).filter(([k,v])=> Number(v) > 0);
+  const total = entries.reduce((s,[_k,v])=> s + Number(v), 0);
+  const r = Math.random() * total;
+  let acc = 0;
+  for(const [k,v] of entries){ acc += Number(v); if(r <= acc) return k; }
+  return entries[entries.length-1][0];
+}
+
+/* pick item based on configured weights */
+function pickWeightedItem(tierKey){
+  const w = getWeights();
+  const weights = w[tierKey] || DEFAULT_WEIGHTS[tierKey] || DEFAULT_WEIGHTS.tier1;
+  const rarity = pickRarity(weights);
+  const pool = (ITEMS[tierKey] || []).filter(i=> i.rarity === rarity);
+  if(pool.length) return rand(pool);
+  // fallback pick from any
+  const all = [].concat(...Object.values(ITEMS));
+  return rand(all);
+}
+
+/* run spin animation by moving first child to end repeatedly (visual) */
+let spinning = false;
+spinStartBtn.addEventListener('click', async ()=>{
+  if(spinning) return;
+  spinning = true;
+  playSFX('spin');
+  // determine shift count
+  const shifts = 48 + Math.floor(Math.random()*46);
+  for(let i=0;i<shifts;i++){
+    if(spinStrip.firstElementChild) spinStrip.appendChild(spinStrip.firstElementChild);
+    const progress = i / shifts;
+    const delay = 20 + Math.pow(progress,2) * 520;
+    await tick(delay);
+  }
+  // determine weighted pick then add to acquired list
+  const picked = pickWeightedItem(activeTab);
+  addAcquired(picked);
+  // display picked in modal briefly using the center element
+  playSFX('win');
+  sendWebhookLog({ action:'spin', tier:activeTab, result:picked.name, rarity:picked.rarity, ts:new Date().toISOString() });
+  spinning = false;
+  // close modal after a short delay
+  setTimeout(()=> closeSpinModal(), 1400);
+});
+
+/* add acquired to list */
+function addAcquired(item){
+  const card = document.createElement('div');
+  card.className = 'drop-card';
+  card.style.display = 'flex';
+  card.style.alignItems = 'center';
+  card.style.gap = '10px';
+  card.style.padding = '8px';
+  card.style.borderRadius = '10px';
+  card.style.border = '1px solid rgba(255,255,255,.04)';
+  card.style.background = 'linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0))';
+  card.innerHTML = `<img src="${item.img || FALLBACK}" style="width:56px;height:56px;object-fit:contain;border-radius:8px;"><div><div style="font-weight:900">${item.name}</div><div style="color:var(--muted);font-size:12px;">${(item.rarity||'common').toUpperCase()}</div></div>`;
+  card.addEventListener('click', ()=> openItemModal(item));
+  acquiredGrid.prepend(card);
+}
+
+/* ---------- filter and tab wiring ---------- */
+filterSelect.addEventListener('change', ()=> renderGrid());
+
+document.querySelectorAll('.topnav .cat').forEach(el => {
+  el.addEventListener('click', ()=> {
+    document.querySelectorAll('.topnav .cat').forEach(x=> x.classList.remove('active'));
+    el.classList.add('active');
+    activeTab = el.dataset.tab;
+    renderSubtabsFor(activeTab);
+    renderGrid();
+  });
+});
+
+/* initialize default */
+renderSubtabsFor(activeTab);
+renderGrid();
+
+/* ---------- Sound / BGM ---------- */
+function playTone(freq,len=0.1,type='sine',gain=0.06){
   if(!audioCtx) return;
   try{
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
-    o.type = type;
-    o.frequency.value = freq;
-    g.gain.value = 0;
+    o.type = type; o.frequency.value = freq;
     o.connect(g); g.connect(audioCtx.destination);
-    const now = audioCtx.currentTime;
+    g.gain.value = 0; const now = audioCtx.currentTime;
     g.gain.linearRampToValueAtTime(gain, now + 0.01);
     o.start(now);
     g.gain.exponentialRampToValueAtTime(0.0001, now + len);
     o.stop(now + len + 0.02);
-  } catch(e){}
+  }catch(e){}
 }
 function playSFX(name){
   if(!audioCtx) return;
+  if(audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
   if(name === 'click') playTone(880,0.06,'square',0.05);
-  if(name === 'spin') { playTone(240,0.12,'sawtooth',0.12); }
-  if(name === 'win') {
-    playTone(880,0.08,'sine',0.12);
-    setTimeout(()=> playTone(1320,0.12,'sine',0.11), 120);
-    setTimeout(()=> playTone(1760,0.16,'sine',0.09), 260);
+  if(name === 'spin') playTone(240,0.14,'sawtooth',0.12);
+  if(name === 'win'){ playTone(880,0.08,'sine',0.12); setTimeout(()=>playTone(1320,0.12,'sine',0.11),120); setTimeout(()=>playTone(1760,0.16,'sine',0.09),260); }
+}
+
+/* enable bgm after first user gesture (autoplay rules) */
+function enableBGM(){
+  function start(){
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
+    bgm.play().catch(()=>{});
+    document.removeEventListener('click', start); document.removeEventListener('touchstart', start);
   }
+  document.addEventListener('click', start);
+  document.addEventListener('touchstart', start);
 }
+enableBGM();
 
-/* -------------------------
-   Utility helpers
-   ------------------------- */
-function randItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function shuffleArray(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a; }
-
-/* -------------------------
-   Weights & picking
-   ------------------------- */
-function loadWeights(){
-  const cfg = loadConfig();
-  return cfg.weights;
-}
-function saveWeights(w){
-  const cfg = loadConfig();
-  cfg.weights = w;
-  saveConfig(cfg);
-}
-
-/* pick rarity based on weights object */
-function pickRarity(weightsObj){
-  const entries = Object.entries(weightsObj).filter(([k,v])=> Number(v) > 0 );
-  const total = entries.reduce((s,[_k,v])=> s + Number(v), 0);
-  const r = Math.random() * total;
-  let acc = 0;
-  for(const [k,v] of entries){
-    acc += Number(v);
-    if(r <= acc) return k;
-  }
-  return entries[entries.length-1][0];
-}
-
-/* pick an item for a given tier using weights */
-function pickItemForTier(tierKey){
-  const weights = loadWeights();
-  if(tierKey === 'tier1'){
-    const rarity = pickRarity(weights.tier1);
-    const pool = ALL_ITEMS.filter(i => i[2] === 'tier1' && i[1] === rarity);
-    if(pool.length) return randItem(pool)[0];
-    return randItem(ALL_ITEMS.filter(i => i[2] === 'tier1'))[0];
-  }
-  if(tierKey === 'tier2'){
-    const rarity = pickRarity(weights.tier2);
-    const pool = ALL_ITEMS.filter(i => i[2] === 'tier2' && i[1] === rarity);
-    if(pool.length) return randItem(pool)[0];
-    return randItem(ALL_ITEMS.filter(i => i[2] === 'tier2'))[0];
-  }
-  if(tierKey === 'attachments'){
-    const rarity = pickRarity(weights.attachments);
-    const pool = ATTACHMENTS.filter(a => a[1] === rarity);
-    if(pool.length) return randItem(pool)[0];
-    return randItem(ATTACHMENTS)[0];
-  }
-  if(tierKey === 'drugs'){
-    const rarity = pickRarity(weights.drugs);
-    const pool = DRUGS.filter(d => d[1] === rarity);
-    if(pool.length) return randItem(pool)[0];
-    return randItem(DRUGS)[0];
-  }
-  // default fallback
-  return randItem(ALL_ITEMS)[0];
-}
-
-/* -------------------------
-   Render the strip (visual pool)
-   ------------------------- */
-function renderStrip(tierKey){
-  slotStrip.innerHTML = '';
-  let pool = [];
-  if(tierKey === 'attachments') pool = ATTACHMENTS.map(a=>[a[0],a[1]]);
-  else if(tierKey === 'drugs') pool = DRUGS.map(d=>[d[0],d[1]]);
-  else pool = ALL_ITEMS.filter(i=> i[2] === tierKey).map(i=>[i[0],i[1]]);
-
-  if(!pool || pool.length === 0) pool = ALL_ITEMS.map(i=>[i[0],i[1]]);
-  const count = Math.max(30, Math.min(80, pool.length * 6));
-  for(let i=0;i<count;i++){
-    const t = randItem(pool);
-    const el = document.createElement('div');
-    el.className = 'slot';
-    const src = IMAGES[t[0]] || FALLBACK_IMG;
-    el.innerHTML = `<img src="${src}" alt="${t[0]}"><div class="label">${t[0]}</div>`;
-    el.dataset.name = t[0];
-    el.dataset.rarity = t[1] || 'common';
-    el.addEventListener('click', ()=> openInfoModal(el.dataset.name, el.dataset.rarity, src));
-    slotStrip.appendChild(el);
-  }
-}
-
-/* -------------------------
-   Find winner (tile covering center)
-   ------------------------- */
-function tileAtCenter(){
-  const rect = slotStrip.getBoundingClientRect();
-  // center relative to viewport
-  const centerX = window.innerWidth / 2;
-  const children = Array.from(slotStrip.children).filter(c => c.classList && c.classList.contains('slot'));
-  for(const c of children){
-    const r = c.getBoundingClientRect();
-    if(r.left <= centerX && r.right >= centerX) return c;
-  }
-  // fallback: pick a random slot
-  return children[Math.floor(Math.random() * children.length)];
-}
-
-/* -------------------------
-   Spin routine (visual)
-   ------------------------- */
-async function spinRoutine(){
-  if(spinning) return;
-  spinning = true;
-  playSFX('spin');
-
-  const tierKey = tierSelect.value; // 'tier1' etc
-  // pre-render a fresh strip with pool for chosen tier
-  renderStrip(tierKey);
-  await tick(30);
-
-  // shift elements by re-appending first to end with easing delays
-  const shifts = 48 + Math.floor(Math.random() * 44);
-  for(let i=0;i<shifts;i++){
-    if(slotStrip.firstElementChild) slotStrip.appendChild(slotStrip.firstElementChild);
-    const progress = i / shifts;
-    const delay = 18 + Math.pow(progress, 2) * 520;
-    await tick(delay);
-  }
-
-  // determine winner element
-  const winner = tileAtCenter();
-  if(winner){
-    const name = winner.dataset.name || winner.querySelector('img')?.alt || 'Unknown';
-    const rarity = winner.dataset.rarity || 'common';
-    // if we want the drop weighting to reflect true chance, pick a new item using pickItemForTier
-    // We'll replace the visible winner with the weighted pick to match configured weights
-    const weightedPick = pickItemForTier(tierKey);
-    // find an index in the visible slots to replace or just treat weightedPick as the result
-    addAcquired(weightedPick, rarityForName(weightedPick));
-    openInfoModal(weightedPick, rarityForName(weightedPick), IMAGES[weightedPick] || FALLBACK_IMG);
-    // highlight winner visually
-    winner.style.boxShadow = '0 18px 60px rgba(255,200,0,.14)';
-    playSFX('win');
-    // send webhook
-    sendWebhook({ action:'spin', tier: tierKey, result: weightedPick, rarity: rarityForName(weightedPick), ts: new Date().toISOString() });
-    setTimeout(()=> { winner.style.boxShadow = ''; }, 1600);
-  }
-
-  setTimeout(()=> { spinning = false; }, 400);
-}
-
-/* small sleep helper */
-function tick(ms){ return new Promise(res => setTimeout(res, ms)); }
-
-/* -------------------------
-   Utility: determine rarity for a name by searching arrays
-   ------------------------- */
-function rarityForName(name){
-  const f1 = ALL_ITEMS.find(i=> i[0] === name);
-  if(f1) return f1[1];
-  const f2 = ATTACHMENTS.find(a=> a[0] === name);
-  if(f2) return f2[1];
-  const f3 = DRUGS.find(d=> d[0] === name);
-  if(f3) return f3[1];
-  return 'common';
-}
-
-/* -------------------------
-   Add acquired card to grid
-   ------------------------- */
-function addAcquired(name, rarity){
-  const card = document.createElement('div');
-  card.className = 'drop-card';
-  const src = IMAGES[name] || FALLBACK_IMG;
-  card.innerHTML = `<img src="${src}" alt="${name}"><div class="drop-details"><div class="name">${name}</div><div class="rarity">${(rarity||'common').toUpperCase()}</div></div>`;
-  card.addEventListener('click', ()=> openInfoModal(name, rarity, src));
-  acquiredGrid.prepend(card);
-  drops.unshift({ name, rarity, src, ts: Date.now() });
-  if(drops.length > 120) { drops.pop(); while(acquiredGrid.children.length > 120) acquiredGrid.removeChild(acquiredGrid.lastChild); }
-}
-
-/* -------------------------
-   Modal open/close
-   ------------------------- */
-function openInfoModal(name, rarity, src){
-  statsName.textContent = name;
-  statsRarity.textContent = (rarity||'common').toUpperCase();
-  statsImage.src = src || FALLBACK_IMG;
-  const s = WEAPON_STATS[name] || {};
-  statsDesc.innerHTML = `
-    <div style="font-weight:900">${name}</div>
-    <div style="color:var(--muted)">Damage: ${s.damage||'-'} • Fire: ${s.fire? s.fire+' RPM' : '-'} • Ammo: ${s.ammo||'-'}</div>
-  `;
-  statsOverlay.classList.add('open');
-}
-closeStatsBtn.addEventListener('click', ()=> { statsOverlay.classList.remove('open'); });
-
-statsOverlay.addEventListener('click', (e)=> {
-  if(e.target === statsOverlay) statsOverlay.classList.remove('open');
-});
-
-/* -------------------------
-   Webhook logger (client-side)
-   ------------------------- */
-async function sendWebhook(payload){
+/* ---------- Webhook logging (client-side) ---------- */
+function sendWebhookLog(payload){
   const cfg = loadConfig();
   const webhook = cfg.webhook || '';
   if(!webhook) return;
-  try{
-    await fetch(webhook, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ content: `Quaker City | Spin: ${payload.result || ''} (${payload.rarity || ''}) — tier:${payload.tier} — ${payload.ts}` })
-    });
-  } catch(e){
-    console.warn('webhook failed', e);
-  }
+  fetch(webhook, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ content: `Quaker | ${payload.action} → ${payload.result||''} (${payload.rarity||''}) — ${payload.ts||''}` })
+  }).catch(e=> console.warn('webhook fail', e));
 }
 
-/* -------------------------
-   Uptime poller & price fetcher
-   ------------------------- */
-let uptimeTimer = null;
-async function startUptime(url){
-  if(!url) return;
-  const el = document.getElementById('infoPanel');
-  async function check(){
-    try{
-      const r = await fetch(url, { cache:'no-store', mode:'cors' });
-      if(r.ok) {
-        el.querySelector('.info-panel')?.classList.remove('offline');
-        document.getElementById('lastupdated').textContent = 'Server: ONLINE';
-      } else {
-        document.getElementById('lastupdated').textContent = 'Server: OFFLINE';
-      }
-    } catch(e){
-      document.getElementById('lastupdated').textContent = 'Server: OFFLINE';
-    }
-  }
-  check();
-  if(uptimeTimer) clearInterval(uptimeTimer);
-  uptimeTimer = setInterval(check, 15000);
-}
-
-async function fetchPriceSummary(url){
-  if(!url) return;
-  try{
-    const r = await fetch(url, { cache:'no-store' });
-    if(!r.ok) throw new Error('bad fetch');
-    const data = await r.json();
-    // simple summary
-    const keys = Object.keys(data).slice(0,3);
-    document.getElementById('lastupdated').textContent = 'Prices: ' + keys.map(k => `${k}:${data[k]}`).join(' • ');
-  } catch(e){
-    console.warn('price fetch failed', e);
-  }
-}
-
-/* -------------------------
-   Admin: load & save UI
-   ------------------------- */
-function loadAdminUI(){
+/* ---------- load/save config on startup ---------- */
+function loadStartup(){
   const cfg = loadConfig();
-  webhookInput.value = cfg.webhook || '';
-  uptimeInput.value = cfg.uptimeUrl || '';
-  priceInput.value = cfg.priceUrl || '';
-
-  // populate numeric weight inputs inside admin panel if present (Part2 admin fields are simplified)
-  // We'll also expose a quick way to reset weights via console if needed
+  if(cfg.webhook) adminWebhook.value = cfg.webhook;
+  if(cfg.uptime) adminUptime.value = cfg.uptime;
+  if(cfg.prices) adminPrices.value = cfg.prices;
+  document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleString();
 }
-saveAdminBtn.addEventListener('click', ()=> {
-  if(!isAdmin()){ alert('Please login as admin first.'); return; }
-  const cfg = loadConfig();
-  cfg.webhook = webhookInput.value.trim();
-  cfg.uptimeUrl = uptimeInput.value.trim();
-  cfg.priceUrl = priceInput.value.trim();
-  // weights handling: advanced UI not present in this Part2 version — could be added
-  saveConfig(cfg);
-  alert('Settings saved. If uptime or price URL were provided, they will be polled shortly.');
-  if(cfg.uptimeUrl) startUptime(cfg.uptimeUrl);
-  if(cfg.priceUrl) fetchPriceSummary(cfg.priceUrl);
+loadStartup();
+
+/* ---------- small accessibility & debug ---------- */
+console.log('Quaker City contraband UI loaded. Admin password (client-side):', ADMIN_PASS);
+
+/* allow closing spin modal by clicking overlay */
+document.getElementById('spinModal').addEventListener('click', (e)=> { if(e.target.id === 'spinModal') closeSpinModal(); });
+
+/* allow ESC to close modals */
+document.addEventListener('keydown', (e)=> {
+  if(e.key === 'Escape'){ if(document.getElementById('spinModal').classList.contains('open')) closeSpinModal(); if(document.getElementById('statsModal').classList.contains('open')) { statsModal.classList.remove('open'); statsModal.style.display='none'; } }
 });
-
-/* -------------------------
-   Small helpers to attach behavior to topnav categories
-   ------------------------- */
-document.querySelectorAll('.topnav .cat').forEach(el => {
-  el.addEventListener('click', () => {
-    document.querySelectorAll('.topnav .cat').forEach(x => x.classList.remove('active'));
-    el.classList.add('active');
-    const k = el.dataset.cat;
-    // map dataset names from Part2 to tier keys expected by logic
-    const map = { tier1:'tier1', tier2:'tier2', attachments:'attachments', drugs:'drugs', stats:'tier1', turf:'tier2', prices:'tier1' };
-    const key = map[k] || 'tier1';
-    tierSelect.value = key;
-    renderStrip(key);
-  });
-});
-
-/* -------------------------
-   Wire up spin & controls
-   ------------------------- */
-spinBtn.addEventListener('click', ()=> {
-  playSFX('click');
-  spinRoutine();
-});
-tierSelect.addEventListener('change', ()=> {
-  renderStrip(tierSelect.value);
-});
-
-/* -------------------------
-   Initialization
-   ------------------------- */
-function init(){
-  // setup music + audio
-  setupBGM();
-
-  // render default strip
-  renderStrip('tier1');
-
-  // load config and start optional services
-  const cfg = loadConfig();
-  if(cfg.uptimeUrl) startUptime(cfg.uptimeUrl);
-  if(cfg.priceUrl) fetchPriceSummary(cfg.priceUrl);
-
-  // admin panel hidden until login
-  adminPanel.style.display = isAdmin() ? 'block' : 'none';
-  loadAdminUI();
-
-  // set a friendly last-updated note
-  document.getElementById('lastupdated').textContent = 'Loaded: ' + new Date().toLocaleString();
-}
-
-/* expose a console helper to set admin via console if you need it:
-   sessionStorage.setItem('qc_admin','1'); location.reload();
-*/
-init();
-
-/* -------------------------
-   Developer console hints
-   ------------------------- */
-console.log('Quaker City — single-file JS loaded.');
-console.log('Admin password (client-side):', ADMIN_PASS);
-console.log('To enable webhook, set it in Admin Panel after logging in. Upload OceanEyes.mp3 and Quaker.png to repo root.');
 </script>
+</body>
+</html>
