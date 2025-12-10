@@ -650,6 +650,10 @@ const WEAPON_STATS = {
   'G43': { damage: 25, fire: 800, ammo: '9mm', magStd: 30, magExt: 60 },                          // Uncommon
   'MP9': { damage: 25, fire: 600, ammo: '.45 ACP', magStd: 25, magExt: 50 },                      // Common
   'G19 MOS': { damage: 30, fire: 900, ammo: '5.7x28', magStd: 50, magExt: 100 },                  // Rare
+  'Sig P320': { damage: 28, fire: 780, ammo: '9mm', magStd: 17, magExt: 34 },                     // Uncommon
+  'CZ 75': { damage: 28, fire: 820, ammo: '9mm', magStd: 16, magExt: 32 },                        // Uncommon
+  'Desert Eagle': { damage: 28, fire: 650, ammo: '.50 AE', magStd: 7, magExt: 14 },               // Uncommon
+  'Smith & Wesson M&P': { damage: 28, fire: 800, ammo: '9mm', magStd: 17, magExt: 34 },           // Uncommon
   'AK-47': { damage: 36, fire: 750, ammo: '5.56x45', magStd: 30, magExt: 60 },                    // Legendary
   'HELLPUP DRACO': { damage: 36, fire: 750, ammo: '5.56x45', magStd: 30, magExt: 60 },            // Legendary
   'Black ARP': { damage: 35, fire: 800, ammo: '5.56x45', magStd: 30, magExt: 60 },                // Epic
@@ -676,11 +680,27 @@ const ITEMS = {
     { name:'G19 MOS', rarity:'rare', category:'Pistols', img:IMAGES['G19 MOS'] || FALLBACK }
   ],
   tier2: [
-    { name:'AK-47', rarity:'legendary', category:'ARs', img:IMAGES['AK-47'] || FALLBACK },
-    { name:'HELLPUP DRACO', rarity:'legendary', category:'ARs', img:IMAGES['HELLPUP DRACO'] || FALLBACK },
+    // Uncommon (4 guns)
+    { name:'Sig P320', rarity:'uncommon', category:'Pistols', img:FALLBACK },
+    { name:'CZ 75', rarity:'uncommon', category:'Pistols', img:FALLBACK },
+    { name:'Desert Eagle', rarity:'uncommon', category:'Pistols', img:FALLBACK },
+    { name:'Smith & Wesson M&P', rarity:'uncommon', category:'Pistols', img:FALLBACK },
+    // Rare (3 guns from tier1)
+    { name:'G22', rarity:'rare', category:'SMG', img:IMAGES['G22'] || FALLBACK },
+    { name:'G41', rarity:'rare', category:'SMG', img:IMAGES['G41'] || FALLBACK },
+    { name:'G19 MOS', rarity:'rare', category:'Pistols', img:IMAGES['G19 MOS'] || FALLBACK },
+    // Epic (6 guns from tier1)
+    { name:'Glock 20 Switch', rarity:'epic', category:'Pistols', img:IMAGES['Glock 20 Switch'] || FALLBACK },
+    { name:'FNX -45', rarity:'epic', category:'Pistols', img:IMAGES['FNX -45'] || FALLBACK },
+    { name:'Tec-9', rarity:'epic', category:'Pistols', img:IMAGES['Tec-9'] || FALLBACK },
+    { name:'MAC-10', rarity:'epic', category:'SMG', img:IMAGES['MAC-10'] || FALLBACK },
+    { name:'Tactical UZI', rarity:'epic', category:'SMG', img:IMAGES['Tactical UZI'] || FALLBACK },
     { name:'Black ARP', rarity:'epic', category:'ARs', img:IMAGES['Black ARP'] || FALLBACK },
     { name:'KEL-TEC PLR', rarity:'epic', category:'Pistols', img:IMAGES['KEL-TEC PLR'] || FALLBACK },
-    { name:'All Black Draco', rarity:'legendary', category:'ARs', img:IMAGES['Draco'] || FALLBACK }
+    // Legendary (3 guns)
+    { name:'AK-47', rarity:'legendary', category:'ARs', img:IMAGES['AK-47'] || FALLBACK },
+    { name:'HELLPUP DRACO', rarity:'legendary', category:'ARs', img:IMAGES['HELLPUP DRACO'] || FALLBACK },
+    { name:'All Black Draco', rarity:'legendary', category:'ARs', img:IMAGES['All Black Draco'] || FALLBACK }
   ],
   testdrops: [
     { name:'.38 Special', rarity:'common', category:'Pistols', img:IMAGES['.38 Special'] || FALLBACK },
@@ -714,7 +734,7 @@ const ITEMS = {
 /* weights */
 const DEFAULT_WEIGHTS = {
   tier1: { common:35, uncommon:40, rare:25, epic:10 },
-  tier2: { rare:50, epic:40, legendary:10 },
+  tier2: { uncommon:15, rare:40, epic:30, legendary:15 },
   testdrops: { common:40, uncommon:30, rare:20, epic:10 },
   attachments: { uncommon:50, rare:30, epic:15, legendary:5 },
   drugs: { common:35, uncommon:25, rare:25, epic:15 }
