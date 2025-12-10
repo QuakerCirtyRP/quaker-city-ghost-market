@@ -182,12 +182,14 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
   border: 3px solid #dc143c;
   border-radius: 16px;
   padding: 0;
-  max-width: 600px;
-  width: 90%;
+  max-width: 1000px;
+  width: 95%;
   text-align: center;
   box-shadow: 0 0 50px rgba(220, 20, 60, 0.6), inset 0 0 30px rgba(220, 20, 60, 0.1);
   animation: victoryScale 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes victoryScale {
@@ -205,6 +207,9 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
   background: linear-gradient(180deg, #dc143c, #a01030);
   padding: 20px;
   border-bottom: 2px solid #ff4757;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .victory-header h2 {
@@ -216,63 +221,115 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
   letter-spacing: 3px;
 }
 
+.victory-count {
+  font-size: 18px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
 .victory-content {
-  padding: 40px 30px;
+  padding: 30px 20px;
+}
+
+.victory-items-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.victory-item {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.2));
+  border: 2px solid rgba(255, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  animation: victoryItemAppear 0.5s ease-out backwards;
+}
+
+@keyframes victoryItemAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.victory-item:nth-child(1) { animation-delay: 0.1s; }
+.victory-item:nth-child(2) { animation-delay: 0.2s; }
+.victory-item:nth-child(3) { animation-delay: 0.3s; }
+.victory-item:nth-child(4) { animation-delay: 0.4s; }
+.victory-item:nth-child(5) { animation-delay: 0.5s; }
+.victory-item:nth-child(6) { animation-delay: 0.6s; }
+
+.victory-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
 }
 
 .victory-image-container {
   position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 0 auto 30px;
-  background: linear-gradient(135deg, #ff0000, #dc143c, #ff0000);
-  border: 3px solid #ff0000;
-  border-radius: 20px;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #ff0000, #dc143c);
+  border: 2px solid #ff0000;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 60px rgba(255, 0, 0, 0.6), inset 0 0 30px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), inset 0 0 20px rgba(255, 0, 0, 0.1);
   animation: victoryImagePulse 2s ease-in-out infinite;
 }
 
 @keyframes victoryImagePulse {
   0%, 100% {
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 60px rgba(255, 0, 0, 0.6), inset 0 0 30px rgba(255, 0, 0, 0.2);
-    border-color: #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), inset 0 0 20px rgba(255, 0, 0, 0.1);
   }
   50% {
-    box-shadow: 0 0 50px rgba(255, 0, 0, 1), 0 0 100px rgba(255, 0, 0, 0.8), inset 0 0 40px rgba(255, 0, 0, 0.3);
-    border-color: #ff3333;
+    box-shadow: 0 0 35px rgba(255, 0, 0, 0.9), inset 0 0 25px rgba(255, 0, 0, 0.2);
   }
 }
 
 .victory-image-container img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 85%;
+  max-height: 85%;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
 }
 
 .victory-item-name {
-  font-size: 32px;
+  font-size: 18px;
   font-weight: 900;
   color: #ffffff;
-  margin: 20px 0 15px;
+  margin: 10px 0 8px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .victory-item-rarity {
   display: inline-block;
-  padding: 10px 30px;
-  border-radius: 8px;
+  padding: 6px 16px;
+  border-radius: 6px;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 15px 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 .victory-item-rarity.common {
@@ -351,8 +408,8 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
 }
 
 /* responsive */
-@media(max-width:980px){ .weapon-popup-body{flex-direction:column; align-items:center;} .weapon-popup-image{width:220px;height:220px;} .title{font-size:34px;} .grid{grid-template-columns: repeat(auto-fill, minmax(150px,1fr));} .victory-image-container{width:220px;height:220px;} .victory-header h2{font-size:36px;} .victory-item-name{font-size:26px;} }
-@media(max-width:640px){ .weapon-popup-inner{width:96%;} .weapon-popup-image{width:180px;height:180px;} .title{font-size:26px} .grid{grid-template-columns: repeat(auto-fill, minmax(120px,1fr));} .victory-card{width:95%;} .victory-image-container{width:180px;height:180px;} .victory-header h2{font-size:28px;} .victory-item-name{font-size:22px;} .victory-content{padding:30px 20px;} }
+@media(max-width:980px){ .weapon-popup-body{flex-direction:column; align-items:center;} .weapon-popup-image{width:220px;height:220px;} .title{font-size:34px;} .grid{grid-template-columns: repeat(auto-fill, minmax(150px,1fr));} .victory-items-grid{grid-template-columns: repeat(2, 1fr) !important; gap:15px;} .victory-image-container{width:150px;height:150px;} .victory-header h2{font-size:32px;} .victory-header{flex-direction:column; gap:10px;} .victory-count{font-size:14px;} }
+@media(max-width:640px){ .weapon-popup-inner{width:96%;} .weapon-popup-image{width:180px;height:180px;} .title{font-size:26px} .grid{grid-template-columns: repeat(auto-fill, minmax(120px,1fr));} .victory-card{width:98%; max-width:100%;} .victory-items-grid{grid-template-columns: 1fr !important; gap:12px;} .victory-image-container{width:140px;height:140px;} .victory-header h2{font-size:24px;} .victory-item-name{font-size:16px;} .victory-content{padding:20px 15px;} .victory-item{padding:15px;} }
 
  
 
@@ -463,17 +520,15 @@ select{ background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.04); colo
   <div id="victoryFrame" class="victory-overlay" style="display:none;">
     <div class="victory-card">
       <div class="victory-header">
-        <h2>YOU GOT:</h2>
+        <h2 id="victoryHeaderText">YOU GOT:</h2>
+        <div class="victory-count" id="victoryCount">4 ITEMS</div>
       </div>
       <div class="victory-content">
-        <div class="victory-image-container">
-          <img id="victoryItemImage" src="" alt="Won Item">
+        <div class="victory-items-grid" id="victoryItemsGrid">
+          <!-- Items will be inserted here dynamically -->
         </div>
-        <div class="victory-item-name" id="victoryItemName">ITEM NAME</div>
-        <div class="victory-item-rarity" id="victoryItemRarity">COMMON</div>
-        <div class="victory-item-desc" id="victoryItemDesc">Item description goes here.</div>
       </div>
-      <button class="victory-collect-btn" id="victoryCollectBtn">COLLECT</button>
+      <button class="victory-collect-btn" id="victoryCollectBtn">COLLECT ALL</button>
     </div>
   </div>
 
@@ -910,14 +965,26 @@ spinStartBtn.addEventListener('click', async ()=>{
     if(spinStrip.firstElementChild) spinStrip.appendChild(spinStrip.firstElementChild);
     await tick(delays[i]);
   }
-  const picked = pickWeightedItem(activeTab);
-  addAcquired(picked);
-  sendWebhook({ action:'spin', tier:activeTab, result:picked.name, rarity:picked.rarity, ts:new Date().toISOString() });
+  
+  // Determine how many items to drop based on tier
+  let itemCount = 4; // Default for tier1
+  if(activeTab === 'testdrops') itemCount = 2;
+  else if(activeTab === 'tier2') itemCount = 6;
+  
+  // Pick multiple items
+  const pickedItems = [];
+  for(let i = 0; i < itemCount; i++) {
+    const item = pickWeightedItem(activeTab);
+    pickedItems.push(item);
+    addAcquired(item);
+  }
+  
+  sendWebhook({ action:'spin', tier:activeTab, result:`${itemCount} items`, ts:new Date().toISOString() });
   playSFX('win');
   setTimeout(()=> { 
     closeSpinModal(); 
     spinning = false; 
-    showVictoryFrame(picked.name, picked.img, picked.rarity);
+    showVictoryFrame(pickedItems);
   }, 700);
 });
 
@@ -927,24 +994,40 @@ dropBtn.addEventListener('click', openSpinModal);
 closeSpin.addEventListener('click', closeSpinModal);
 
 /* Victory Frame Functions */
-function showVictoryFrame(itemName, itemImage, rarity) {
+function showVictoryFrame(items) {
   const victoryFrame = document.getElementById('victoryFrame');
-  const victoryItemImage = document.getElementById('victoryItemImage');
-  const victoryItemName = document.getElementById('victoryItemName');
-  const victoryItemRarity = document.getElementById('victoryItemRarity');
-  const victoryItemDesc = document.getElementById('victoryItemDesc');
+  const victoryItemsGrid = document.getElementById('victoryItemsGrid');
+  const victoryCount = document.getElementById('victoryCount');
+  const victoryHeaderText = document.getElementById('victoryHeaderText');
   
-  victoryItemImage.src = itemImage || FALLBACK;
-  victoryItemName.textContent = itemName;
-  victoryItemRarity.textContent = rarity.toUpperCase();
-  victoryItemRarity.className = 'victory-item-rarity ' + rarity.toLowerCase();
+  // Update header
+  victoryHeaderText.textContent = items.length > 1 ? 'YOU GOT:' : 'YOU GOT:';
+  victoryCount.textContent = `${items.length} ITEM${items.length > 1 ? 'S' : ''}`;
   
-  // Set description based on item type
-  const stats = WEAPON_STATS[itemName];
-  if (stats) {
-    victoryItemDesc.textContent = `Damage: ${stats.damage} | Fire Rate: ${stats.fire} RPM | Ammo: ${stats.ammo}`;
-  } else {
-    victoryItemDesc.textContent = `You've won a ${rarity} item!`;
+  // Clear existing items
+  victoryItemsGrid.innerHTML = '';
+  
+  // Add each item to grid
+  items.forEach((item, index) => {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'victory-item';
+    itemEl.innerHTML = `
+      <div class="victory-image-container">
+        <img src="${item.img || FALLBACK}" alt="${item.name}" onerror="this.src='${FALLBACK}'">
+      </div>
+      <div class="victory-item-name">${item.name}</div>
+      <div class="victory-item-rarity ${item.rarity.toLowerCase()}">${item.rarity.toUpperCase()}</div>
+    `;
+    victoryItemsGrid.appendChild(itemEl);
+  });
+  
+  // Adjust grid columns based on item count
+  if(items.length === 2) {
+    victoryItemsGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+  } else if(items.length === 4) {
+    victoryItemsGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+  } else if(items.length === 6) {
+    victoryItemsGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
   }
   
   victoryFrame.style.display = 'flex';
