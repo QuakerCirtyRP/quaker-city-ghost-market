@@ -911,13 +911,52 @@ spinStartBtn.addEventListener('click', async ()=>{
   addAcquired(picked);
   sendWebhook({ action:'spin', tier:activeTab, result:picked.name, rarity:picked.rarity, ts:new Date().toISOString() });
   playSFX('win');
-  setTimeout(()=> { closeSpinModal(); spinning = false; }, 700);
+  setTimeout(()=> { 
+    closeSpinModal(); 
+    spinning = false; 
+    showVictoryFrame(picked.name, picked.img, picked.rarity);
+  }, 700);
 });
 
 function openSpinModal(){ spinModal.classList.add('open'); spinModal.style.display='flex'; renderSpinStrip(); }
 function closeSpinModal(){ spinModal.classList.remove('open'); spinModal.style.display='none'; }
 dropBtn.addEventListener('click', openSpinModal);
 closeSpin.addEventListener('click', closeSpinModal);
+
+/* Victory Frame Functions */
+function showVictoryFrame(itemName, itemImage, rarity) {
+  const victoryFrame = document.getElementById('victoryFrame');
+  const victoryItemImage = document.getElementById('victoryItemImage');
+  const victoryItemName = document.getElementById('victoryItemName');
+  const victoryItemRarity = document.getElementById('victoryItemRarity');
+  const victoryItemDesc = document.getElementById('victoryItemDesc');
+  
+  victoryItemImage.src = itemImage || FALLBACK;
+  victoryItemName.textContent = itemName;
+  victoryItemRarity.textContent = rarity.toUpperCase();
+  victoryItemRarity.className = 'victory-item-rarity ' + rarity.toLowerCase();
+  
+  // Set description based on item type
+  const stats = WEAPON_STATS[itemName];
+  if (stats) {
+    victoryItemDesc.textContent = `Damage: ${stats.damage} | Fire Rate: ${stats.fire} RPM | Ammo: ${stats.ammo}`;
+  } else {
+    victoryItemDesc.textContent = `You've won a ${rarity} item!`;
+  }
+  
+  victoryFrame.style.display = 'flex';
+  playSFX('win');
+}
+
+function closeVictoryFrame() {
+  const victoryFrame = document.getElementById('victoryFrame');
+  victoryFrame.style.display = 'none';
+}
+
+document.getElementById('victoryCollectBtn').addEventListener('click', closeVictoryFrame);
+document.getElementById('victoryFrame').addEventListener('click', (e) => {
+  if (e.target.id === 'victoryFrame') closeVictoryFrame();
+});
 
 /* weighting picker */
 function pickRarity(weights){
